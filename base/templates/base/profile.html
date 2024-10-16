@@ -1,0 +1,33 @@
+{% extends 'base/layout.html' %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto py-8">
+    <h2 class="text-3xl font-bold text-center mb-8">Your Profile</h2>
+
+    <div class="bg-white shadow-md rounded-lg p-6">
+        <h3 class="text-2xl font-semibold text-gray-800 mb-4">{{ profile.user.first_name }} {{ profile.user.last_name }}</h3>
+        <p class="text-gray-600 mb-2"><strong>Email:</strong> {{ profile.user.email }}</p>
+        <p class="text-gray-600 mb-4"><strong>Bio:</strong> {{ profile.bio }}</p>
+
+     {% if profile.profile_picture %}
+   <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" class="rounded-full mb-4" style="width: 500px; height: 400px;">
+{% else %}
+    <p class="text-gray-500 mb-4">No profile picture available.</p>
+{% endif %}
+
+     <p class="mb-4">
+    <a href="{{ profile.fb_url }}" target="_blank" style="display: inline-block; padding: 10px 15px; background-color: #3b5998; color: white; border-radius: 5px; text-decoration: none; margin-right: 10px; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='blue';" onmouseout="this.style.backgroundColor='#3b5998';">Facebook</a> |
+    <a href="{{ profile.twitter_url }}" target="_blank" style="display: inline-block; padding: 10px 15px; background-color: #1da1f2; color: white; border-radius: 5px; text-decoration: none; margin-left: 10px; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='blue';" onmouseout="this.style.backgroundColor='#1da1f2';">Twitter</a>
+</p>
+
+        <br>
+        <a href="{% url 'edit_profile' %}"
+   style="display: inline-block; padding: 10px 15px; background-color: #6b46c1; color: white; border-radius: 8px; text-decoration: none; transition: background-color 0.3s;"
+   onmouseover="this.style.backgroundColor='blue';"
+   onmouseout="this.style.backgroundColor='#6b46c1';">
+    Edit Profile
+</a>
+
+    </div>
+</div>
+{% endblock %}

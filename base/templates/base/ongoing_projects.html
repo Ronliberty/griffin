@@ -1,0 +1,26 @@
+{% extends 'base/layout.html' %}
+
+{% block content %}
+  <h2 style="font-size: 24px; color: black; margin-bottom: 20px; text-align: center;">Ongoing Projects</h2>
+
+  <ul style="list-style-type: none; padding: 0; margin: 60px 10px; display: flex; flex-direction: column; align-items: center; width: 35vw; max-width: 800px;">
+    {% if ongoing_projects %}
+      {% for user_project in ongoing_projects %}
+        <li style="background-color: aliceblue; padding: 30px; margin: 20px 0; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center;">
+          <strong style="font-size: 20px; color: black; margin-bottom: 15px; align-self: flex-start;">Project:</strong>
+
+          <span style="font-size: 18px; color: black; margin-bottom: 20px;">{{ user_project.project.name }}</span>
+          <a href="{% url 'complete_project' user_project.project.id %}"
+             class="btn btn-primary"
+             style="display: inline-block; padding: 15px 20px; font-size: 16px; color: #fff; background-color: #007bff; border: none; border-radius: 8px; text-decoration: none; transition: background-color 0.3s ease; width: 30%; max-width: 250px;">
+            Complete Project
+          </a>
+        </li>
+      {% endfor %}
+    {% else %}
+      <li style="margin: 20px 0; width: 100%;">
+        <p style="font-size: 18px; color: black; text-align: center;">You have no ongoing projects at the moment.</p>
+      </li>
+    {% endif %}
+  </ul>
+{% endblock %}

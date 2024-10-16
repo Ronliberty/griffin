@@ -1,0 +1,31 @@
+{% extends 'griffin/main.html' %}
+
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List</title>
+</head>
+<body style="background-color: #f9fafb;">
+    <div style="max-width: 800px; margin: 0 auto; padding: 40px 16px; overflow-x: hidden;">
+        <h1 style="font-size: 1.875rem; font-weight: bold; color: #1f2937; margin-bottom: 32px; text-align: center;">User List</h1>
+
+        {% if users %}
+            <ul style="list-style-type: none; padding: 0; margin: 0;">
+                {% for user in users %}
+                    <li style="background-color: #ffffff; padding: 24px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); transition: background-color 0.2s ease; margin-bottom: 16px; overflow-wrap: break-word; word-wrap: break-word;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                            <span style="font-weight: 500; font-size: 1.125rem; color: #1f2937; max-width: 70%; overflow-wrap: break-word;">{{ user.username }}</span>
+                            <span style="color: #4b5563; max-width: 50%; text-align: right; overflow-wrap: break-word;">{{ user.email }}</span>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p style="text-align: center; color: #6b7280; font-size: 1.125rem;">No users found.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
+{% endblock %}

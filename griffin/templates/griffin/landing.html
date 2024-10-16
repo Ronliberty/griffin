@@ -1,0 +1,87 @@
+{% load static tailwind_tags %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BSMW - Welcome</title>
+    {% tailwind_css %}
+    <style>
+        /* Typing effect style */
+        .typing {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 2.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 0.15em solid #000;
+            animation: blink 0.7s step-end infinite;
+        }
+
+        @keyframes blink {
+            from, to {
+                border-color: transparent;
+            }
+            50% {
+                border-color: black;
+            }
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900">
+
+    <!-- Navbar -->
+   <nav class="bg-gray-800 p-4">
+    <div class="container mx-auto flex justify-between items-center">
+        <div class="text-white text-2xl font-bold">
+             <a href="{% url 'griffin-landing' %}" class="hover:underline">
+        BSMW
+    </a>
+        </div>
+        <div>
+            <a href="{% url 'staff_login' %}" class="text-white text-lg hover:underline">Login</a>
+        </div>
+    </div>
+</nav>
+
+    <!-- Hero Section -->
+    <section class="flex items-center justify-center h-screen bg-gray-100">
+        <div class="text-center">
+            <!-- The animated typing text -->
+            <h1 id="hero-text" class="typing"></h1>
+            <p class="text-lg text-gray-600 mt-4">We are here to make your work easier.</p>
+            <a href="{% url 'staff_login' %}" class="mt-6 inline-block bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-600 transition duration-300">
+                Get Started
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-4 mt-8">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2024 BSMW. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for typing effect -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const heroText = document.getElementById('hero-text');
+            const message = "Welcome back, Boss!";
+            let i = 0;
+
+            function typeWriter() {
+                if (i < message.length) {
+                    heroText.textContent += message.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 150);  // Adjust typing speed (ms)
+                } else {
+                    heroText.classList.remove('typing');  // Remove blinking cursor after typing completes
+                }
+            }
+
+            typeWriter();
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,39 @@
+{% extends 'griffin/main.html' %}
+
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Completed Projects</title>
+</head>
+<body style="background-color: #F9FAFB;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 40px 24px;">
+        <h2 style="font-size: 1.875rem; font-weight: bold; color: black; margin-bottom: 24px;">Completed Projects</h2>
+
+        {% if completed_projects %}
+            <ul style="list-style-type: none; padding: 0; margin: 0;">
+                {% for user_project in completed_projects %}
+                    <li style="background-color: #FFFFFF; padding: 24px; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); transition: transform 0.3s; margin-bottom: 24px; transform: scale(1); cursor: pointer;"
+                        onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
+                        <div style="margin-bottom: 16px;">
+                            <h3 style="font-size: 1.25rem; font-weight: 600; color: black;">{{ user_project.project.name }}</h3>
+                        </div>
+                        <div style="font-size: 0.875rem; color: black;">
+                            <p style="color: black; "><strong>Completed By:</strong> {{ user_project.user.username }}</p> <br>
+                            <p><strong>Completed On:</strong> {{ user_project.completed_on|date:"Y-m-d H:i" }}</p>
+                        </div>
+                        {% if user_project.description %}
+                            <div style="margin-top: 16px; color: black;">
+                                <p style="color: #374151;"><strong>Description:</strong> {{ user_project.description }}</p>
+                            </div>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p style="color: #6B7280; font-size: 1.125rem;">No completed projects available.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
+{% endblock %}

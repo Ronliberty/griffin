@@ -1,0 +1,31 @@
+{% extends 'base/layout.html' %}
+
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Work History</title>
+</head>
+<body style="background-color: #f7fafc;">
+    <div style="max-width: 900px; margin: 0 auto; padding: 32px;">
+        <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 16px;">Work History</h2>
+
+        {% if completed_projects %}
+            <ul style="list-style-type: none; padding: 0;">
+                {% for user_project in completed_projects %}
+                    <li style="background-color: #ffffff; width: 50vw; height: 10vh; padding: 16px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); margin-bottom: 16px; text-align: center;">
+                        <strong style="font-size: 1.125rem;">{{ user_project.project.name }}</strong><br> <br>
+                        <span style="color: #718096;">Completed On: {{ user_project.completed_on|date:"Y-m-d H:i" }}</span><br>
+                        {% if user_project.description %}
+                            <strong>Description:</strong> <span style="color: black;">{{ user_project.description }}</span><br><br>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p style="color: #4a5568;">You have not completed any projects yet.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
+{% endblock %}

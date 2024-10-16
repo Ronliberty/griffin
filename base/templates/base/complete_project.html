@@ -1,0 +1,17 @@
+{% extends 'base/layout.html' %}
+
+{% block content %}
+  <h2 style="font-size: 24px; font-weight: bold; color: black; margin-bottom: 20px;">
+    Complete Project: {{ project.name }}
+  </h2>
+
+  <form method="post" enctype="multipart/form-data" style="background-color: aliceblue; padding: 50px 50px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); margin-top: 50px;">
+    {% csrf_token %}
+    <div style="margin-bottom: 30px;">
+      {{ form.as_p }}
+    </div>
+    <button type="submit" class="btn btn-success" style="background-color: blue; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+      Complete Project
+    </button>
+  </form>
+{% endblock %}

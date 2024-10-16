@@ -1,0 +1,127 @@
+{% extends 'griffin/main.html' %}
+
+{% block title %}Create New Project{% endblock %}
+
+{% block content %}
+<div style="background-color: white; max-width: 800px; margin: auto; padding: 32px; border-radius: 16px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); transition: transform 0.2s;">
+    <h1 style="font-size: 2.5rem; font-weight: bold; color: #2d3748; margin-bottom: 32px; text-align: center;">Create New Project</h1>
+    <form id="project-form" method="POST" enctype="multipart/form-data">  <!-- Added enctype for file upload -->
+        {% csrf_token %}
+        <!-- Project Name Field -->
+        <div style="margin-bottom: 24px;">
+            <label for="name" style="display: block; color: black; font-weight: 600; margin-bottom: 8px;">Project Name</label>
+            <input type="text" id="name" name="name" placeholder="Enter project name"
+                style="width: 100%; padding: 12px; border: 1px solid #cbd5e0; border-radius: 4px; outline: none; transition: border-color 0.2s; margin-bottom: 0.5rem;">
+        </div>
+
+        <!-- Project Description Field -->
+        <div style="margin-bottom: 24px;">
+            <label for="description" style="display: block; color: black; font-weight: 600; margin-bottom: 8px;">Project Description</label>
+            <textarea id="description" name="description" rows="4" placeholder="Describe your project..."
+                style="width: 100%; padding: 12px; border: 1px solid #cbd5e0; border-radius: 4px; outline: none; transition: border-color 0.2s;"></textarea>
+        </div>
+
+        <!-- Deadline Field -->
+        <div style="margin-bottom: 24px;">
+            <label for="deadline" style="display: block; color: black; font-weight: 600; margin-bottom: 8px;">Deadline</label>
+            <input type="date" id="deadline" name="deadline"
+                style="width: 100%; padding: 12px; border: 1px solid #cbd5e0; border-radius: 4px; outline: none; transition: border-color 0.2s;">
+        </div>
+
+        <!-- File Upload Field -->
+        <div style="margin-bottom: 24px;">
+            <label for="file" style="display: block; color: black; font-weight: 600; margin-bottom: 8px;">Upload File</label>
+            <input type="file" id="file" name="file"
+                style="width: 100%; padding: 12px; border: 1px solid #cbd5e0; border-radius: 4px; outline: none; transition: border-color 0.2s;">
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit"
+            style="width: 30%; background-color: #4299e1; color: white; padding: 10px; border-radius: 4px; transition: background-color 0.3s; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">
+            Create Project
+        </button>
+    </form>
+</div>
+
+<!-- Project List -->
+<div id="project-list" style="margin: 40px auto; max-width: 800px;">
+    <h2 style="font-size: 2rem; font-weight: bold; margin-bottom: 24px;">Project List</h2>
+
+    <!-- Loop through all projects and display them -->
+    {% for project in projects %}
+    <div style="padding: 24px; background-color: white; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border-radius: 8px; margin-bottom: 16px;">
+        <h3 style="font-size: 1.75rem; font-weight: 600; margin-bottom: 8px;">{{ project.name }}</h3>
+        <p style="color: #4a5568; margin-bottom: 16px;">{{ project.description }}</p>
+        <p style="color: red;">Deadline: {{ project.deadline }}</p>
+
+        {% if project.file %}
+        <div style="margin-top: 16px;">
+            <h4 style="font-weight: 600; color: #2d3748;">Uploaded File:</h4>
+
+            <!-- Display based on file type -->
+            {% if project.file_type == 'image' %}
+            <img src="{{ project.file.url }}" alt="Project File" style="width: 100%; height: auto; margin-top: 8px;">
+
+            {% elif project.file_type == 'pdf' %}
+            <embed src="{{ project.file.url }}" type="application/pdf" width="100%" height="500px" />
+
+            {% else %}
+           <a href="{{ project.file.url }}"
+   style="display: inline-block;
+          padding: 10px 20px;
+          color: white;
+          background-color: #3182ce;
+          text-decoration: none;
+          border: none;
+          border-radius: 5px;
+          font-size: 16px;
+          text-align: center;
+          cursor: pointer;
+          transition: background-color 0.3s;">
+   Download File
+</a>
+
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+    {% empty %}
+    <p>No projects available.</p>
+    {% endfor %}
+</div>
+{% endblock %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#project-form').on('submit', function(e) {
+        e.preventDefault();  // Prevent the default form submission
+
+        var formData = new FormData(this);  // Use FormData to handle file uploads
+
+        $.ajax({
+            type: 'POST',
+            url: '{% url "create_project" %}',  // Django URL for the form submission
+            data: formData,
+            contentType: false,  // Prevent jQuery from setting content type
+            processData: false,  // Prevent jQuery from processing data
+            success: function(response) {
+                // Append the new project to the project list
+                $('#project-list').append(`
+                    <div style="padding: 24px; background-color: white; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border-radius: 8px; margin-bottom: 16px;">
+                        <h3 style="font-size: 1.75rem; font-weight: 600; margin-bottom: 8px;">${response.name}</h3>
+                        <p style="color: #4a5568; margin-bottom: 16px;">${response.description}</p>
+                        <p style="color: #a0aec0;">Deadline: ${response.deadline}</p>
+                    </div>
+                `);
+
+                // Clear the form after submission
+                $('#project-form')[0].reset();
+            },
+            error: function(xhr, status, error) {
+                console.error('Form submission failed: ', error);
+            }
+        });
+    });
+});
+</script>

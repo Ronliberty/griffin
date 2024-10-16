@@ -1,0 +1,74 @@
+{% load static tailwind_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Page Title</title>
+    {% tailwind_css %}  <!-- Load Tailwind CSS here -->
+</head>
+<body>
+    {% block content %}
+    <div class="max-w-md mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
+        {% if page == 'login' %}
+        <form method="post" action="" class="space-y-6">
+            {% csrf_token %}
+
+            {% if messages %}
+            <div class="messages space-y-2">
+                {% for message in messages %}
+                <div class="p-4 rounded-lg text-white {% if message.tags == 'error' %}bg-red-500{% elif message.tags == 'success' %}bg-green-500{% endif %}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Username:</label>
+                <input type="text" name="username" placeholder="Enter Username" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 sm:text-sm" />
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Password:</label>
+                <input type="password" name="password" placeholder="Enter Password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 sm:text-sm" />
+            </div>
+
+            <div>
+                <input type="submit" value="Login" class="w-full bg-purple-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-purple-700 focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 cursor-pointer transition duration-300" />
+            </div>
+
+            <p class="text-center text-sm mt-4">Haven't signed up yet?</p>
+            <a href="{% url 'register' %}" class="text-purple-600 hover:underline text-center block">Sign up</a>
+
+        </form>
+
+        {% else %}
+        <form method="post" action="" class="space-y-6">
+            {% csrf_token %}
+
+            {% if messages %}
+            <div class="messages space-y-2">
+                {% for message in messages %}
+                <div class="p-4 rounded-lg text-white {% if message.tags == 'error' %}bg-red-500{% elif message.tags == 'success' %}bg-green-500{% endif %}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {{ form.as_p }}
+
+            <div>
+                <input type="submit" value="Submit" class="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300 ease-in-out cursor-pointer" />
+            </div>
+        </form>
+
+        <p class="text-center text-sm mt-4">Already signed up?</p>
+        <a href="{% url 'login' %}" class="text-blue-600 hover:underline text-center block">Login</a>
+        {% endif %}
+    </div>
+    {% endblock %}
+</body>
+</html>
